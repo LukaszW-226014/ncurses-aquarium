@@ -25,6 +25,9 @@ void Fish::way(Screen &s, int sx, int sy, int dx, int dy)
     int x = sx, y = sy;
     int next_x = 0;
     int next_y = 0;
+    int previous_x = 0;
+    int previous_y = 0;
+
     int direction_x = dx;
     int direction_y = dy;
 
@@ -35,8 +38,8 @@ void Fish::way(Screen &s, int sx, int sy, int dx, int dy)
     Aquarium::m.lock();
     attron(A_BOLD);
     if (has_colors() == TRUE) {
-        start_color();
-        init_pair(getNumber(), getColor(), COLOR_BLACK);
+        //start_color();
+        init_pair(getNumber(), getColor(), COLOR_BLUE);
         attron(COLOR_PAIR(getNumber()));
         printw("Fish %d\n", getNumber());
         attroff(COLOR_PAIR(getNumber()));
@@ -44,16 +47,17 @@ void Fish::way(Screen &s, int sx, int sy, int dx, int dy)
     attroff(A_BOLD);
     Aquarium::m.unlock();
 
-    while(counter<100) {
+    while(true) {
         Aquarium::m.lock();
         attron(COLOR_PAIR(getNumber()));
         s.draw(x, y);
+        s.clearPath(previous_x, previous_y);
         attroff(COLOR_PAIR(getNumber()));
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
         next_x = x + direction_x;
         next_y = y + direction_y;
+        previous_x = x;
+        previous_y = y;
 
         if (next_x >= max_x || next_x < 0) {
             direction_x*= -1;
@@ -68,6 +72,7 @@ void Fish::way(Screen &s, int sx, int sy, int dx, int dy)
         counter++;
         s.reload();
         Aquarium::m.unlock();
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 
 }

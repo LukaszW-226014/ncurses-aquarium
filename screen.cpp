@@ -18,6 +18,10 @@ void Screen::init()
     getmaxyx(stdscr, maxy_, maxx_);
     //mutex
     ready_ = true;
+    start_color();
+    init_pair(1, COLOR_WHITE, COLOR_BLUE);
+    bkgd(COLOR_PAIR(1));
+    //assume_default_colors(COLOR_WHITE, COLOR_CYAN);
 }
 
 void Screen::clean()
@@ -35,6 +39,11 @@ void Screen::draw(int x, int y)
     //mutex
     //if (ready_)
     mvprintw(y, x, "o");
+}
+
+void Screen::clearPath(int x, int y)
+{
+    mvprintw(y, x, " ");
 }
 
 void Screen::end()

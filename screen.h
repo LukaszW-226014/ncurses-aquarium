@@ -27,7 +27,7 @@ public:
     void end();
     int get_maxx();
     int get_maxy();
-
+    void clearPath(int x, int y);
 };
 
 #endif //NCURSES_AQUARIUM_SCREEN_H

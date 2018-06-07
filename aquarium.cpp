@@ -20,8 +20,6 @@ Aquarium::~Aquarium() {
 void Aquarium::start() {
     screen1.init();
 
-    printw("Aquarium!\n\n");
-
     screen1.reload();
     generateFishes();
 
@@ -31,7 +29,8 @@ void Aquarium::start() {
 }
 
 void Aquarium::generateFishes() {
-    Fish fish1(COLOR_GREEN, 5, 6, 1, -1);
+
+    Fish fish1(COLOR_YELLOW, 5, 6, 1, -1);
     //fishList.emplace_back(COLOR_GREEN);
     std::thread fish1Thread(fish1);
 
@@ -43,8 +42,12 @@ void Aquarium::generateFishes() {
     //fishList.push_back(fish3);
     std::thread fish3Thread(fish3);
 
+    Fish fish4(COLOR_WHITE, 15, 5, -1, 1);
+    std::thread fish4Thread(fish4);
+
     fish1Thread.join();
     fish2Thread.join();
     fish3Thread.join();
+    fish4Thread.join();
 }
 
