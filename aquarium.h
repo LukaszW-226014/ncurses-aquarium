@@ -11,6 +11,7 @@
 #include <thread>
 #include <list>
 #include <mutex>
+#include <time.h>
 #include "screen.h"
 #include "fish.h"
 
@@ -20,10 +21,13 @@ class Aquarium {
 private:
     int height;
     int width;
+    int fishCount;
+    int randomValue;
 
 public:
     std::list<std::thread> threadList;
     Aquarium();
+    Aquarium(int fishCount);
     ~Aquarium();
     void start();
     void generateFishes();

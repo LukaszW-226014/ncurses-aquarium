@@ -27,6 +27,7 @@ Fish::~Fish() {
 
 void Fish::way(Screen &s, short sx, short sy, short dx, short dy)
 {
+    srand (time(NULL));
     currentX = sx;
     currentY = sy;
     next_x = 0;
@@ -77,7 +78,11 @@ void Fish::way(Screen &s, short sx, short sy, short dx, short dy)
         }
         for (auto& f: fishList){
             if ((next_x == f.currentX) && (next_y == f.currentY) && (getNumber() != f.getNumber())){
-                std::cerr << "(" << getNumber() << ", " << f.getNumber() << ")\n";
+                deathProbability = rand() % 100;
+                newFishProbability = rand() % 100;
+
+                //std::cerr << "(" << getNumber() << ", " << f.getNumber() << deathProbability << ", " << newFishProbability << ")\n";
+
                 currentDX*= -1;
                 currentDY*= -1;
                 currentX+=currentDX;

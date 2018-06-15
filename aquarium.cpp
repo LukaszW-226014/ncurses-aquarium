@@ -13,6 +13,11 @@ Aquarium::Aquarium() {
     start();
 }
 
+Aquarium::Aquarium(int fishCount) {
+    this->fishCount = fishCount;
+    start();
+}
+
 Aquarium::~Aquarium() {
 
 }
@@ -52,17 +57,26 @@ void Aquarium::generateFishes() {
 
 
 
-    Fish::fishList.emplace_back(COLOR_YELLOW, 5, 6, 1, -1);
+//    Fish::fishList.emplace_back(COLOR_YELLOW, 5, 6, 1, -1);
+//
+//    Fish::fishList.emplace_back(COLOR_RED, 10, 15, -1, 1);
+//
+//    Fish::fishList.emplace_back(COLOR_CYAN, 20, 20, 1, -1);
+//
+//    Fish::fishList.emplace_back(COLOR_WHITE, 15, 5, -1, 1);
+//
+//    Fish::fishList.emplace_back(COLOR_MAGENTA, 17, 7, -1, 1);
+//
+//    Fish::fishList.emplace_back(COLOR_BLACK, 4, 8, -1, 1);
 
-    Fish::fishList.emplace_back(COLOR_RED, 10, 15, -1, 1);
 
-    Fish::fishList.emplace_back(COLOR_CYAN, 20, 20, 1, -1);
+    srand (time(NULL));
 
-    Fish::fishList.emplace_back(COLOR_WHITE, 15, 5, -1, 1);
 
-    Fish::fishList.emplace_back(COLOR_MAGENTA, 17, 7, -1, 1);
-
-    Fish::fishList.emplace_back(COLOR_BLACK, 4, 8, -1, 1);
+    for (int i = 0; i < fishCount; ++i) {
+        int colorRand = rand() %8;
+        Fish::fishList.emplace_back((colorRand == 4) ? 6 : colorRand, rand() % Aquarium::screen1.get_maxx(), rand() % Aquarium::screen1.get_maxy(), ((rand() %2) == 0) ? -1 : 1, ((rand() %2) == 0) ? -1 : 1);
+    }
 
     for (auto& f: Fish::fishList){
         threadList.emplace_back(std::ref(f));

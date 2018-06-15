@@ -3,5 +3,8 @@
 
 int main()
 {
-    new Aquarium();
+    int fishCount;
+    std::cout << "Podaj liczbe ryb: ";
+    std::cin >> fishCount;
+    new Aquarium(fishCount);
 }

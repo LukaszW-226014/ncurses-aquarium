@@ -13,6 +13,7 @@
 #include <chrono>
 #include <mutex>
 #include "screen.h"
+#include <time.h>
 
 class Fish {
 private:
@@ -32,6 +33,8 @@ private:
     int next_y;
     int previous_x;
     int previous_y;
+    int deathProbability;
+    int newFishProbability;
     //std::mutex mtx;
 public:
     static std::list<Fish> fishList;
