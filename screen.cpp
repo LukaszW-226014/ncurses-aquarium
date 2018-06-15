@@ -34,11 +34,10 @@ void Screen::reload()
     refresh();
 }
 
-void Screen::draw(int x, int y)
-{
+void Screen::draw(int x, int y) {
     //mutex
-    //if (ready_)
-    mvprintw(y, x, "o");
+    //if (ready_)  
+    mvprintw(y, x, "*");
 }
 
 void Screen::clearPath(int x, int y)

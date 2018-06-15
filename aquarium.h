@@ -9,17 +9,20 @@
 #include <stdio.h>
 #include <iostream>
 #include <thread>
-#include <vector>
+#include <list>
 #include <mutex>
-#include "fish.h"
 #include "screen.h"
+#include "fish.h"
+
+
 
 class Aquarium {
 private:
     int height;
     int width;
-    //std::vector <Fish> fishList;
+
 public:
+    std::list<std::thread> threadList;
     Aquarium();
     ~Aquarium();
     void start();

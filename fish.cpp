@@ -2,9 +2,12 @@
 // Created by masterofblocks on 25.03.18.
 //
 
+#include "aquarium.h"
 #include "fish.h"
 
 short Fish::global = 0;
+
+ std::list<Fish> Fish::fishList;
 
 Fish::Fish(short color, short sx, short sy, short dx, short dy) {
     global++;
@@ -20,16 +23,19 @@ Fish::~Fish() {
 
 }
 
-void Fish::way(Screen &s, int sx, int sy, int dx, int dy)
-{
-    int x = sx, y = sy;
-    int next_x = 0;
-    int next_y = 0;
-    int previous_x = 0;
-    int previous_y = 0;
 
-    int direction_x = dx;
-    int direction_y = dy;
+
+void Fish::way(Screen &s, short sx, short sy, short dx, short dy)
+{
+    currentX = sx;
+    currentY = sy;
+    next_x = 0;
+    next_y = 0;
+    previous_x = 0;
+    previous_y = 0;
+
+    currentDX = dx;
+    currentDY = dy;
 
     int max_x = s.get_maxx();
     int max_y = s.get_maxy();
@@ -50,25 +56,35 @@ void Fish::way(Screen &s, int sx, int sy, int dx, int dy)
     while(true) {
         Aquarium::m.lock();
         attron(COLOR_PAIR(getNumber()));
-        s.draw(x, y);
+        s.draw(currentX, currentY);
         s.clearPath(previous_x, previous_y);
         attroff(COLOR_PAIR(getNumber()));
 
-        next_x = x + direction_x;
-        next_y = y + direction_y;
-        previous_x = x;
-        previous_y = y;
+        next_x = currentX + currentDX;
+        next_y = currentY + currentDY;
+        previous_x = currentX;
+        previous_y = currentY;
 
         if (next_x >= max_x || next_x < 0) {
-            direction_x*= -1;
+            currentDX*= -1;
         } else {
-            x+= direction_x;
+            currentX+= currentDX;
         }
         if (next_y >= max_y || next_y < 0) {
-            direction_y*= -1;
+            currentDY*= -1;
         } else {
-            y+= direction_y;
+            currentY+= currentDY;
         }
+        for (auto& f: fishList){
+            if ((next_x == f.currentX) && (next_y == f.currentY) && (getNumber() != f.getNumber())){
+                std::cerr << "(" << getNumber() << ", " << f.getNumber() << ")\n";
+                currentDX*= -1;
+                currentDY*= -1;
+                currentX+=currentDX;
+                currentY+=currentDY;
+            }
+        }
+        //printw("(%d %d)\n", currentX, currentY);
         counter++;
         s.reload();
         Aquarium::m.unlock();
@@ -79,7 +95,6 @@ void Fish::way(Screen &s, int sx, int sy, int dx, int dy)
 
 void Fish::operator()() {
     //std::this_thread::sleep_for(std::chrono::seconds(2));
-
     way(Aquarium::screen1, sx, sy, dx, dy);
 
     //Aquarium::m.unlock();
@@ -91,4 +106,8 @@ short Fish::getNumber() const {
 
 short Fish::getColor() const {
     return color;
+}
+
+void Fish::checkCollision(const Fish &F) {
+
 }
